@@ -4,20 +4,14 @@ import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { Constants } from '../config/constants';
-
-
 @Injectable()
 export class SocketManager {
 
   public connected = false;
-
   private socket: Socket;
   private socketEvents = new Subject<any>();
-
-  private url = '';
-
+  private url = `http://${Constants.IP_HOST}:${Constants.SOCKET_PORT}`;
   private user = 'usuario prueba';
-
   private resumeSubscription: any;
   private pauseSubscription: any;
 
@@ -29,7 +23,6 @@ export class SocketManager {
   public async init() {
     return new Promise(async (rs, rj) => {
       try {
-        this.url = 'http://172.18.2.78:8010';
         this.socket = io(this.url,
           {
             autoConnect: false,
@@ -79,16 +72,16 @@ export class SocketManager {
     this.socket.emit('value', { value: value });
   }
 
+  private onResponse(key, data?) {
+    this.socketEvents.next({ key: key, data });
+  }
+
   private connect() {
     this.socket.connect();
   }
 
-  private disconect() {
+  private disconnect() {
     this.socket.disconnect();
-  }
-
-  private onResponse(key, data?) {
-    this.socketEvents.next({ key: key, data });
   }
 
   /**************************************  SOCKET EVENTS *******************************************/
@@ -96,12 +89,12 @@ export class SocketManager {
   private async subscribeToPauseResume() {
     if (!this.resumeSubscription || this.resumeSubscription.closed) {
       this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
-
+        this.connect();
       }));
     }
     if (!this.pauseSubscription || this.pauseSubscription.closed) {
       this.pauseSubscription = await this.platform.pause.subscribe(() => this.ngZone.run(() => {
-        this.disconect();
+        this.disconnect();
       }));
     }
   }
