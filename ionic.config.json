@@ -1,0 +1,7 @@
+{
+  "name": "windowsVolumeClient",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "angular"
+}
