@@ -3,26 +3,30 @@ import { Injectable, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
-import { Constants } from '../config/constants';
+import { Constants } from './config/constants';
+
 @Injectable()
 export class SocketManager {
 
   public connected = false;
   private socket: Socket;
   private socketEvents = new Subject<any>();
-  private url = `http://${Constants.IP_HOST}:${Constants.SOCKET_PORT}`;
+  private url = '';
   private user = 'usuario prueba';
   private resumeSubscription: any;
   private pauseSubscription: any;
 
   constructor(
     private platform: Platform,
-    private ngZone: NgZone
+    private ngZone: NgZone,
+    private constants: Constants
   ) { }
 
   public async init() {
     return new Promise(async (rs, rj) => {
       try {
+        await this.platform.ready();
+        this.url = `http://${this.constants.currentIp}:${Constants.SOCKET_PORT}`;
         this.socket = io(this.url,
           {
             autoConnect: false,

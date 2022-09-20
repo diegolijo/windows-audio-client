@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { Http as HttpManager } from '../../services/http';
 import { SocketManager } from '../../services/socket-manager';
-
+import { StorageManager } from '../../services/storage';
 
 @Component({
   selector: 'app-home',
@@ -13,16 +12,19 @@ export class HomePage implements OnInit, OnDestroy {
   @ViewChild('range') range: any;
 
   listenFunc: () => void;
+  public pxTop = 0;
+  public pxLeft = 0;
 
   constructor(
     private renderer: Renderer2,
     private socket: SocketManager,
-    private http: HttpManager,
+    private storage: StorageManager,
 
   ) { }
 
   ngOnInit() {
     this.subscribeToSocket();
+    this.pxLeft = (window.innerWidth - 35) / 2;
   }
 
   ionViewDidEnter() {
@@ -36,8 +38,18 @@ export class HomePage implements OnInit, OnDestroy {
 
   //******************************** VIEW ********************************/
   private onChangeRangeValue() {
-    console.log('value-> ' + this.range.nativeElement.valueAsNumber);
-    this.socket.sendMessage(this.range.nativeElement.valueAsNumber);
+    const el = this.range.nativeElement;
+    console.log('value-> ' + el.valueAsNumber);
+    this.socket.sendMessage(el.valueAsNumber);
+    this.pxTop = this.calculateFatherPosition(el.valueAsNumber);
+  }
+
+
+  private calculateFatherPosition(value: number) {
+    const el = this.range.nativeElement;
+    let pxTop = (el.clientWidth * (100 - value)) / 100;
+    pxTop += el.offsetTop / 2;
+    return pxTop;
   }
 
   //***************************** FUNCTIONS *****************************/
@@ -51,9 +63,11 @@ export class HomePage implements OnInit, OnDestroy {
     switch (value.key) {
       case 'connected':
         this.setRangeValue(value.data.initialValue);
+        this.pxTop = this.calculateFatherPosition(value.data.initialValue);
         break;
-      case '':
-
+      case 'response':
+        this.setRangeValue(value.data.changeValue);
+        this.pxTop = this.calculateFatherPosition(value.data.changeValue);
         break;
       case '':
 

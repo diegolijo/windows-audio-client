@@ -1,14 +1,11 @@
-<ion-header>
-  <ion-toolbar color="primary">
-    <ion-title>
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content>
+
+  <ion-menu-button class="menu-btn"></ion-menu-button>
+
   <div class="content">
     <div class="slider-wrapper">
       <input #range type="range" min="0" max="100" value="0" step="1">
     </div>
   </div>
+  <img src="./assets/img/father.png" class="imagen" [ngStyle]="{'top.px': pxTop,'left.px': pxLeft}">
 </ion-content>

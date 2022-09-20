@@ -7,10 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { SocketManager } from './services/socket-manager';
 import { HttpClientModule } from '@angular/common/http';
 import { Http } from './services/http';
-import { Constants } from './config/constants';
+import { Constants } from './services/config/constants';
 import { Helper } from './services/helper';
 import { Device } from '@awesome-cordova-plugins/device/ngx';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
+import { Storage } from '@ionic/storage';
+import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
+import { StorageManager } from './services/storage';
+import { ComponentsModule } from './components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +22,8 @@ import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ComponentsModule,
   ],
   providers: [
     // app services
@@ -26,9 +31,12 @@ import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
     Http,
     Constants,
     Helper,
+    StorageManager,
     //cordova pluging
     SplashScreen,
     Device,
+    Storage,
+    NativeStorage,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

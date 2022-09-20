@@ -6,19 +6,27 @@
   align-items: center;
 }
 
+.menu-btn {
+  position: absolute;
+  top: 0.2em;
+  left: 0.5em;
+}
+
 .slider-wrapper {
   display: inline-block;
   width: 2em;
-  height: 20em;
+  height: 30em;
   padding: 0;
-
   input {
-    width: 20em;
+    width: 30em;
     height: 2em;
-    transform-origin: 10em 10em;
+    transform-origin: 15em 15em;
     transform: rotate(-90deg);
     background-color: var(--ion-color-primary);
   }
+}
 
-
+.imagen {
+  position: absolute;
+  height: 5em;
 }

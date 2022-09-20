@@ -1,3 +1,18 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-split-pane contentId="main-content">
+    <!--The global side menu-->
+    <ion-menu contentId="main-content" type="overlay">
+      <!-- (ionWillOpen)="onOpenMenu($event)" (ionDidClose)="onCloseMenu()" -->
+      <ion-content color="dark">
+        <div class="ipdiv">
+          <div>host IP:</div>
+          <ion-input [value]="this.constants.currentIp" (ionChange)="onChangeIp($event)"></ion-input>
+        </div>
+        <hr>
+      </ion-content>
+
+
+    </ion-menu>
+    <ion-router-outlet id="main-content"></ion-router-outlet>
+  </ion-split-pane>
 </ion-app>
