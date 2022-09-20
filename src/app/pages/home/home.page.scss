@@ -1,0 +1,24 @@
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.slider-wrapper {
+  display: inline-block;
+  width: 2em;
+  height: 20em;
+  padding: 0;
+
+  input {
+    width: 20em;
+    height: 2em;
+    transform-origin: 10em 10em;
+    transform: rotate(-90deg);
+    background-color: var(--ion-color-primary);
+  }
+
+
+}
