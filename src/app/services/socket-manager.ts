@@ -14,7 +14,7 @@ export class SocketManager {
   private socket: Socket;
   private socketEvents = new Subject<any>();
 
-  private url ='';
+  private url = '';
 
   private user = 'usuario prueba';
 
@@ -40,11 +40,30 @@ export class SocketManager {
           });
 
         this.socket.on('response', (data) => {
-          console.log('response: ' + data);
-          this.onResponse(data);
+          this.onResponse('response', data);
         });
-        await this.connect();
+
+        this.socket.on('connected', (data) => {
+          this.onResponse('connected', data);
+        });
+
+        this.socket.on('connect', () => {
+          this.connected = true;
+          this.onResponse('connect');
+        });
+
+        this.socket.on('disconnect', () => {
+          this.connected = false;
+          this.onResponse('disconnect');
+        });
+
+        this.socket.on('connect_error', () => {
+          this.connected = false;
+          this.onResponse('connect_error');
+        });
+
         this.subscribeToPauseResume();
+        this.connect();
         rs(true);
       } catch (err) {
         rj(err);
@@ -52,46 +71,24 @@ export class SocketManager {
     });
   }
 
-
-  public async connect() {
-    return new Promise(async (rs, rj) => {
-      try {
-        this.socket.connect();
-        this.socket.on('connect', () => {
-          console.log('cliente conectado');
-          this.connected = true;
-          rs(true);
-        });
-        this.socket.on('disconnect', () => {
-          console.log('cliente desconectado');
-          this.connected = false;
-          rs(true);
-        });
-        this.socket.on('connect_error', () => {
-          console.log('error al conectar');
-          this.connected = false;
-          rs(false);
-        });
-      } catch (err) {
-        rj(err);
-      }
-    });
-  }
-
-  public disconect() {
-    this.socket.disconnect();
+  public getSocketObservable() {
+    return this.socketEvents.asObservable();
   }
 
   public sendMessage(value) {
     this.socket.emit('value', { value: value });
   }
 
-  public getSocketObservable() {
-    return this.socketEvents.asObservable();
+  private connect() {
+    this.socket.connect();
   }
 
-  private onResponse(data) {
-    this.socketEvents.next(data);
+  private disconect() {
+    this.socket.disconnect();
+  }
+
+  private onResponse(key, data?) {
+    this.socketEvents.next({ key: key, data });
   }
 
   /**************************************  SOCKET EVENTS *******************************************/
@@ -99,7 +96,7 @@ export class SocketManager {
   private async subscribeToPauseResume() {
     if (!this.resumeSubscription || this.resumeSubscription.closed) {
       this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
-        this.connect();
+
       }));
     }
     if (!this.pauseSubscription || this.pauseSubscription.closed) {

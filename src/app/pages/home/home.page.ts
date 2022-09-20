@@ -21,27 +21,63 @@ export class HomePage implements OnInit, OnDestroy {
 
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.subscribeToSocket();
+  }
 
   ionViewDidEnter() {
     this.listenFunc = this.renderer.listen(this.range.nativeElement, 'input', () => this.onChangeRangeValue());
-    //this.setRangeValue(55);
     this.socket.init();
   }
 
   ngOnDestroy() {
-    // Removes "listen" listener
-    this.listenFunc();
-
+    this.listenFunc(); // Removes listener
   }
 
+  //******************************** VIEW ********************************/
   private onChangeRangeValue() {
     console.log('value-> ' + this.range.nativeElement.valueAsNumber);
     this.socket.sendMessage(this.range.nativeElement.valueAsNumber);
   }
 
+  //***************************** FUNCTIONS *****************************/
   private setRangeValue(value: number) {
     this.range.nativeElement.valueAsNumber = value ? value : 0;
+  }
+
+
+  private handlerSocketEvent(value: any) {
+    console.log(JSON.stringify(value, null, 4));
+    switch (value.key) {
+      case 'connected':
+        this.setRangeValue(value.data.initialValue);
+        break;
+      case '':
+
+        break;
+      case '':
+
+        break;
+      case '':
+
+        break;
+      case '':
+
+        break;
+      case '':
+
+        break;
+      default:
+        break;
+    }
+  }
+
+
+  //***************************** SUBSCRIBE *****************************/
+  private subscribeToSocket() {
+    this.socket.getSocketObservable().subscribe(value => {
+      this.handlerSocketEvent(value);
+    });
   }
 
 }

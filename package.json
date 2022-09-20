@@ -3,6 +3,9 @@
   "version": "0.0.1",
   "author": "Diego Santiago",
   "homepage": "https://www.vayapedal.com/",
+  "engines": {
+    "node": "16.10.0"
+  },
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -21,6 +24,8 @@
     "@angular/platform-browser": "^14.0.0",
     "@angular/platform-browser-dynamic": "^14.0.0",
     "@angular/router": "^14.0.0",
+    "@awesome-cordova-plugins/device": "^5.45.0",
+    "@awesome-cordova-plugins/splash-screen": "^5.45.0",
     "@ionic/angular": "^6.1.9",
     "@ionic/cordova-builders": "^7.0.0",
     "ionicons": "^6.0.3",
