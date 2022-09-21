@@ -1,5 +1,9 @@
 <div #elFather class="content" [ngStyle]="{'height.px': height,'width.px': width}">
-  <img src="./assets/img/father.png" class="knob" [ngStyle]="{'top.px': pxTop,'left.px': pxLeft ,'height.px': fatherheight }">
-  <div [ngStyle]="{'top.px': 0,'left.px': (width - 10) / 2 ,'height.px': height,'width.px': 10}">
+  <img src="./assets/img/father.png" class="knob"
+    [ngStyle]="{'top.px': pxTop,'left.px': pxLeft ,'height.px': fatherheight }">
+  <div [ngStyle]="{'top.px': 0,'left.px': (width - slideWidth) / 2 ,'height.px': height,'width.px': slideWidth, 'background': colorOff}">
+  </div>
+  <div
+    [ngStyle]="{'top.px': pxTopActive,'left.px': (width - slideWidth) / 2 ,'height.px': activeHeight ,'width.px': slideWidth, 'background': colorActive}">
   </div>
 </div>

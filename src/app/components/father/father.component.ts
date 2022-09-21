@@ -1,23 +1,35 @@
 /* eslint-disable max-len */
 /* eslint-disable @angular-eslint/no-input-rename */
-import { Component, ElementRef, EventEmitter, Input, NgZone, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { GestureController, GestureDetail } from '@ionic/angular';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-father',
   templateUrl: './father.component.html',
   styleUrls: ['./father.component.scss'],
 })
-export class FatherComponent implements OnInit {
+export class FatherComponent implements OnInit, OnChanges {
 
   @ViewChild('elFather') elFather: any;
+
+  //style
   @Input('height') height;
-  @Input('fatherheight') fatherheight;
+  @Input('father-height') fatherheight;
   @Input('width') width;
+  @Input('slide-width') slideWidth;
+  @Input('color-active') colorActive;
+  @Input('color-off') colorOff;
+  // fnctns
+  @Input('input-value') inputValue;
+  @Input('scale') scale;
+  @Input('max-decimals') decimals;
   @Output() onchange = new EventEmitter();
 
   public pxLeft = 0;
   public pxTop = 0;
+  public activeHeight = 0;
+  public pxTopActive = 0;
 
   constructor(
     private gestureCtrl: GestureController,
@@ -33,13 +45,20 @@ export class FatherComponent implements OnInit {
     }, 100);
   }
 
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes.inputValue) {
+      console.log(changes.inputValue.currentValue);
+    }
+
+
+  }
+
   loadLongPressOnElement() {
     const gesture = this.gestureCtrl.create({
       el: this.elementRef.nativeElement,
       threshold: 0,
       gestureName: 'change_father',
       onMove: ev => {
-        /*         console.log('onStart ' + JSON.stringify(ev)); */
         this.ngZone.run(() => {
           this.calculateViewPosition(ev);
         });
@@ -50,11 +69,16 @@ export class FatherComponent implements OnInit {
 
   private calculateViewPosition(ev: GestureDetail) {
     console.log('currentY: ' + ev.currentY + '  - fatherheight: ' + this.fatherheight + '  - height: ' + this.height + ' - pxTop: ' + this.pxTop + '  offserTop: ' + this.elFather.nativeElement.offsetParent.offsetTop);
+    //knob values
     this.pxTop = ev.currentY - this.elFather.nativeElement.offsetParent.offsetTop - this.fatherheight / 2;
     this.pxTop = this.pxTop + this.fatherheight / 2 > this.height ? this.height - this.fatherheight / 2 : this.pxTop;
     this.pxTop = this.pxTop + this.fatherheight / 2 < 0 ? 0 - this.fatherheight / 2 : this.pxTop;
-    let slideValue = Math.abs(((this.pxTop + this.fatherheight / 2) * 100 / this.height) - 100);
-    slideValue = Number.parseInt(slideValue.toString(), 10);
+    //slide values
+    this.activeHeight = this.height - this.pxTop - this.fatherheight / 2;
+    this.pxTopActive = this.height - this.activeHeight;
+    //out value [0-100]
+    let slideValue = Math.abs(((this.pxTop + this.fatherheight / 2) * this.scale / this.height) - this.scale);
+    slideValue = Number.parseFloat(slideValue.toFixed(this.decimals));
     this.onchange.emit(slideValue);
   }
 

@@ -1,5 +1,10 @@
 <ion-content>
   <ion-menu-button class="menu-btn"></ion-menu-button>
-  <app-father [width]="100" [height]="500" [fatherheight]="75" (onchange)="onChangeRangeValue($event)" class="father">
-  </app-father>
+  <div class="father">
+    <app-father [width]="200" [slide-width]="5" [height]="500" [father-height]="75" [color-off]="'#033d5a'"
+      [color-active]="'#04bbff'" [scale]="100" [max-decimals]="0" [input-value]="input"
+      (onchange)="onChangeRangeValue($event)">
+    </app-father>
+  </div>
+
 </ion-content>

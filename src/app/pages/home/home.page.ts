@@ -7,69 +7,41 @@ import { StorageManager } from '../../services/storage';
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage implements OnInit, OnDestroy {
+export class HomePage implements OnInit {
+  input: number;
+  width: number;
 
-  /*   @ViewChild('range') range: any; */
-  /*
-    listenFunc: () => void;
-    public pxTop = 0;
-    public pxLeft = 0; */
 
   constructor(
     private renderer: Renderer2,
     private socket: SocketManager,
-    private storage: StorageManager,
+    private storage: StorageManager
 
   ) { }
 
   ngOnInit() {
     this.subscribeToSocket();
     this.socket.init();
-    /*     this.pxLeft = (window.innerWidth - 35) / 2; */
-  }
 
-  ionViewDidEnter() {
-    //  this.listenFunc = this.renderer.listen(this.range.nativeElement, 'input', () => this.onChangeRangeValue());
-
-  }
-
-  ngOnDestroy() {
-    /*     this.listenFunc(); // Removes listener */
+    this.width = window.innerWidth;
   }
 
   //******************************** VIEW ********************************/
   public onChangeRangeValue(value: number) {
-    /*     const el = this.range.nativeElement; */
     console.log('value-> ' + value);
     this.socket.sendMessage(value);
-    /*     this.pxTop = this.calculateFatherPosition(el.valueAsNumber); */
+    this.input = value;
   }
 
-
-  /*   private calculateFatherPosition(value: number) {
-      const el = this.range.nativeElement;
-      let pxTop = (el.clientWidth * (100 - value)) / 100;
-      pxTop += el.offsetTop / 2;
-      return pxTop;
-    }
-   */
   //***************************** FUNCTIONS *****************************/
-  private setRangeValue(value: number) {
-    /*     this.range.nativeElement.valueAsNumber = value ? value : 0; */
-    // TODO mover el slide con la respuesta del socket
-  }
-
-
   private handlerSocketEvent(value: any) {
     console.log(JSON.stringify(value, null, 4));
     switch (value.key) {
       case 'connected':
         this.setRangeValue(value.data.initialValue);
-        /*         this.pxTop = this.calculateFatherPosition(value.data.initialValue); */
         break;
       case 'response':
         this.setRangeValue(value.data.changeValue);
-        /*         this.pxTop = this.calculateFatherPosition(value.data.changeValue); */
         break;
       case '':
 
@@ -86,6 +58,10 @@ export class HomePage implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  private setRangeValue(value: number) {
+    // TODO mover el slide con la respuesta del socket
   }
 
 
