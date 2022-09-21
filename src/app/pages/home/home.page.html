@@ -1,11 +1,5 @@
 <ion-content>
-
   <ion-menu-button class="menu-btn"></ion-menu-button>
-
-  <div class="content">
-    <div class="slider-wrapper">
-      <input #range type="range" min="0" max="100" value="0" step="1">
-    </div>
-  </div>
-  <img src="./assets/img/father.png" class="imagen" [ngStyle]="{'top.px': pxTop,'left.px': pxLeft}">
+  <app-father [width]="100" [height]="500" [fatherheight]="75" (onchange)="onChangeRangeValue($event)" class="father">
+  </app-father>
 </ion-content>

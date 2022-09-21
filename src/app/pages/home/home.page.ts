@@ -9,11 +9,11 @@ import { StorageManager } from '../../services/storage';
 })
 export class HomePage implements OnInit, OnDestroy {
 
-  @ViewChild('range') range: any;
-
-  listenFunc: () => void;
-  public pxTop = 0;
-  public pxLeft = 0;
+  /*   @ViewChild('range') range: any; */
+  /*
+    listenFunc: () => void;
+    public pxTop = 0;
+    public pxLeft = 0; */
 
   constructor(
     private renderer: Renderer2,
@@ -24,37 +24,39 @@ export class HomePage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscribeToSocket();
-    this.pxLeft = (window.innerWidth - 35) / 2;
+    this.socket.init();
+    /*     this.pxLeft = (window.innerWidth - 35) / 2; */
   }
 
   ionViewDidEnter() {
-    this.listenFunc = this.renderer.listen(this.range.nativeElement, 'input', () => this.onChangeRangeValue());
-    this.socket.init();
+    //  this.listenFunc = this.renderer.listen(this.range.nativeElement, 'input', () => this.onChangeRangeValue());
+
   }
 
   ngOnDestroy() {
-    this.listenFunc(); // Removes listener
+    /*     this.listenFunc(); // Removes listener */
   }
 
   //******************************** VIEW ********************************/
-  private onChangeRangeValue() {
-    const el = this.range.nativeElement;
-    console.log('value-> ' + el.valueAsNumber);
-    this.socket.sendMessage(el.valueAsNumber);
-    this.pxTop = this.calculateFatherPosition(el.valueAsNumber);
+  public onChangeRangeValue(value: number) {
+    /*     const el = this.range.nativeElement; */
+    console.log('value-> ' + value);
+    this.socket.sendMessage(value);
+    /*     this.pxTop = this.calculateFatherPosition(el.valueAsNumber); */
   }
 
 
-  private calculateFatherPosition(value: number) {
-    const el = this.range.nativeElement;
-    let pxTop = (el.clientWidth * (100 - value)) / 100;
-    pxTop += el.offsetTop / 2;
-    return pxTop;
-  }
-
+  /*   private calculateFatherPosition(value: number) {
+      const el = this.range.nativeElement;
+      let pxTop = (el.clientWidth * (100 - value)) / 100;
+      pxTop += el.offsetTop / 2;
+      return pxTop;
+    }
+   */
   //***************************** FUNCTIONS *****************************/
   private setRangeValue(value: number) {
-    this.range.nativeElement.valueAsNumber = value ? value : 0;
+    /*     this.range.nativeElement.valueAsNumber = value ? value : 0; */
+    // TODO mover el slide con la respuesta del socket
   }
 
 
@@ -63,11 +65,11 @@ export class HomePage implements OnInit, OnDestroy {
     switch (value.key) {
       case 'connected':
         this.setRangeValue(value.data.initialValue);
-        this.pxTop = this.calculateFatherPosition(value.data.initialValue);
+        /*         this.pxTop = this.calculateFatherPosition(value.data.initialValue); */
         break;
       case 'response':
         this.setRangeValue(value.data.changeValue);
-        this.pxTop = this.calculateFatherPosition(value.data.changeValue);
+        /*         this.pxTop = this.calculateFatherPosition(value.data.changeValue); */
         break;
       case '':
 

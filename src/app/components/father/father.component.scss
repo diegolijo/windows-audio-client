@@ -1,0 +1,16 @@
+.content {
+  background: rgb(97, 97, 97);
+
+  div {
+    position: absolute;
+    background: rgb(134, 134, 134);
+    border-radius: 0.5em;
+  }
+
+
+}
+
+.knob {
+  position: absolute;
+  z-index: 1000000;
+}
