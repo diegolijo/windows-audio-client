@@ -1,4 +1,5 @@
-import { Component, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, NgZone, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Helper } from 'src/app/services/helper';
 import { SocketManager } from '../../services/socket-manager';
 import { StorageManager } from '../../services/storage';
 
@@ -8,22 +9,30 @@ import { StorageManager } from '../../services/storage';
   styleUrls: ['home.page.scss'],
 })
 export class HomePage implements OnInit {
+
   input: number;
   width: number;
-
+  height: number;
 
   constructor(
     private renderer: Renderer2,
-    private socket: SocketManager,
-    private storage: StorageManager
+    public socket: SocketManager,
+    private storage: StorageManager,
+    private ngZone: NgZone,
+    private helper: Helper
 
   ) { }
 
-  ngOnInit() {
-    this.subscribeToSocket();
-    this.socket.init();
+  async ngOnInit() {
+    try {
+      this.width = window.innerWidth;
+      this.height = window.innerHeight * 0.65;
+      this.subscribeToSocket();
+      this.socket.init();
+    } catch (err) {
+      console.log(JSON.stringify(err));
+    }
 
-    this.width = window.innerWidth;
   }
 
   //******************************** VIEW ********************************/
@@ -33,18 +42,51 @@ export class HomePage implements OnInit {
     this.input = value;
   }
 
+  public onClickReconect() {
+    this.reconnect();
+  }
+
   //***************************** FUNCTIONS *****************************/
-  private handlerSocketEvent(value: any) {
-    console.log(JSON.stringify(value, null, 4));
+
+  private setRangeValue(value: number) {
+    this.input = value;
+  }
+
+  private reconnect() {
+    try {
+      this.socket.destroy();
+      this.socket.init();
+    } catch (err) {
+      if (err.message === 'tiemout loader') {
+        this.helper.showMessage('no se ha podido conectar con el host');
+      }
+    }
+  }
+
+  //***************************** SUBSCRIBE *****************************/
+  private subscribeToSocket() {
+    this.socket.getSocketObservable().subscribe(value => {
+      this.ngZone.run(() => {
+        this.handlerSocketResponse(value);
+      });
+    });
+  }
+
+  private handlerSocketResponse(value: any) {
+    // console.log(JSON.stringify(value, null, 4));
     switch (value.key) {
       case 'connected':
+        this.helper.closeLoader();
         this.setRangeValue(value.data.initialValue);
+        console.log('connected');
         break;
       case 'response':
         this.setRangeValue(value.data.changeValue);
         break;
-      case '':
-
+      case 'connect_error':
+        this.helper.showMessage('no se ha podido conectar con el host');
+        this.helper.closeLoader();
+        this.socket.destroy();
         break;
       case '':
 
@@ -59,17 +101,4 @@ export class HomePage implements OnInit {
         break;
     }
   }
-
-  private setRangeValue(value: number) {
-    // TODO mover el slide con la respuesta del socket
-  }
-
-
-  //***************************** SUBSCRIBE *****************************/
-  private subscribeToSocket() {
-    this.socket.getSocketObservable().subscribe(value => {
-      this.handlerSocketEvent(value);
-    });
-  }
-
 }

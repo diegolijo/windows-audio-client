@@ -1,9 +1,10 @@
 /* eslint-disable object-shorthand */
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Subject } from 'rxjs';
 import { io, Socket } from 'socket.io-client';
 import { Constants } from './config/constants';
+import { Helper } from './helper';
 
 @Injectable()
 export class SocketManager {
@@ -13,20 +14,19 @@ export class SocketManager {
   private socketEvents = new Subject<any>();
   private url = '';
   private user = 'usuario prueba';
-  private resumeSubscription: any;
-  private pauseSubscription: any;
 
   constructor(
     private platform: Platform,
-    private ngZone: NgZone,
-    private constants: Constants
+    private constants: Constants,
+    private helper: Helper
   ) { }
 
   public async init() {
     return new Promise(async (rs, rj) => {
       try {
         await this.platform.ready();
-        this.url = `http://${this.constants.currentIp}:${Constants.SOCKET_PORT}`;
+        this.helper.showLoader('conectando...');
+        this.url = `http://${this.constants.currentIp[0]}:${Constants.SOCKET_PORT}`;
         this.socket = io(this.url,
           {
             autoConnect: false,
@@ -58,14 +58,19 @@ export class SocketManager {
           this.connected = false;
           this.onResponse('connect_error');
         });
-
-        this.subscribeToPauseResume();
         this.connect();
         rs(true);
       } catch (err) {
         rj(err);
       }
     });
+  }
+
+  public destroy() {
+    if (this.socket) {
+      this.socket.disconnect();
+      delete this.socket;
+    }
   }
 
   public getSocketObservable() {
@@ -76,34 +81,17 @@ export class SocketManager {
     this.socket.emit('value', { value: value });
   }
 
-  private onResponse(key, data?) {
-    this.socketEvents.next({ key: key, data });
-  }
-
   private connect() {
     this.socket.connect();
   }
 
-  private disconnect() {
-    this.socket.disconnect();
+  /*   private disconnect() {
+         this.socket.disconnect();
+    } */
+
+  private onResponse(key, data?) {
+    this.socketEvents.next({ key: key, data });
   }
-
-  /**************************************  SOCKET EVENTS *******************************************/
-
-  private async subscribeToPauseResume() {
-    if (!this.resumeSubscription || this.resumeSubscription.closed) {
-      this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
-        this.connect();
-      }));
-    }
-    if (!this.pauseSubscription || this.pauseSubscription.closed) {
-      this.pauseSubscription = await this.platform.pause.subscribe(() => this.ngZone.run(() => {
-        this.disconnect();
-      }));
-    }
-  }
-
-
 
 
 

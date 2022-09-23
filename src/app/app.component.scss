@@ -13,10 +13,15 @@
         --padding-bottom: 0em;
         --padding-end: 1em;
         --padding-start: 1em;
-
     }
 }
 
 hr {
     background: var(--ion-color-light);
+}
+
+.btn-qr {
+    text-transform: none;
+    --border-radius: 0.2em;
+    margin: 1.5em 0.6em;
 }

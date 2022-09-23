@@ -11,7 +11,7 @@ export class Constants {
   static readonly SAVED_IP = 'ip';
   static DEFAULT_IP = '192.168.1.133';
 
-  public currentIp = '';
+  public currentIp: string[] = [Constants.DEFAULT_IP];
 
   constructor() {
 

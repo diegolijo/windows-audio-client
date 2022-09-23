@@ -47,8 +47,13 @@ export class FatherComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.inputValue) {
-      console.log(changes.inputValue.currentValue);
-    }
+      console.log();
+      //knob values
+      this.pxTop = this.height - ((this.height * (changes.inputValue.currentValue || 0) / this.scale) + (this.fatherheight / 2));
+      //slide values
+      this.activeHeight = this.height - this.pxTop - this.fatherheight / 2;
+      this.pxTopActive = - this.activeHeight;
+     }
 
 
   }
@@ -68,14 +73,15 @@ export class FatherComponent implements OnInit, OnChanges {
   }
 
   private calculateViewPosition(ev: GestureDetail) {
-    console.log('currentY: ' + ev.currentY + '  - fatherheight: ' + this.fatherheight + '  - height: ' + this.height + ' - pxTop: ' + this.pxTop + '  offserTop: ' + this.elFather.nativeElement.offsetParent.offsetTop);
+    console.log(JSON.stringify(ev));
+    //  console.log('currentY: ' + ev.currentY + '  - fatherheight: ' + this.fatherheight + '  - height: ' + this.height + ' - pxTop: ' + this.pxTop + '  offserTop: ' + this.elFather.nativeElement.offsetTop);
     //knob values
-    this.pxTop = ev.currentY - this.elFather.nativeElement.offsetParent.offsetTop - this.fatherheight / 2;
+    this.pxTop = ev.currentY - this.elFather.nativeElement.offsetTop - this.fatherheight / 2;
     this.pxTop = this.pxTop + this.fatherheight / 2 > this.height ? this.height - this.fatherheight / 2 : this.pxTop;
     this.pxTop = this.pxTop + this.fatherheight / 2 < 0 ? 0 - this.fatherheight / 2 : this.pxTop;
     //slide values
     this.activeHeight = this.height - this.pxTop - this.fatherheight / 2;
-    this.pxTopActive = this.height - this.activeHeight;
+    this.pxTopActive = - this.activeHeight;
     //out value [0-100]
     let slideValue = Math.abs(((this.pxTop + this.fatherheight / 2) * this.scale / this.height) - this.scale);
     slideValue = Number.parseFloat(slideValue.toFixed(this.decimals));

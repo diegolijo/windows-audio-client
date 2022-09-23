@@ -1,10 +1,15 @@
-<ion-content>
-  <ion-menu-button class="menu-btn"></ion-menu-button>
-  <div class="father">
-    <app-father [width]="200" [slide-width]="5" [height]="500" [father-height]="75" [color-off]="'#033d5a'"
-      [color-active]="'#04bbff'" [scale]="100" [max-decimals]="0" [input-value]="input"
-      (onchange)="onChangeRangeValue($event)">
-    </app-father>
-  </div>
+<ion-menu-button class="menu-btn"></ion-menu-button>
 
-</ion-content>
+
+<div class="father">
+  <app-father [width]="width" [slide-width]="5" [height]="height" [father-height]="100" [color-off]="'#001c2a'"
+    [color-active]="'#04bbff'" [scale]="100" [max-decimals]="0" [input-value]="input"
+    (onchange)="onChangeRangeValue($event)">
+  </app-father>
+</div>
+
+<ion-icon class="conn-icon" name="globe-outline" [color]="socket.connected?'success':'danger'" (click)="onClickReconect()"></ion-icon>
+<!-- radio-outline  -->
+<div class="btn-mute" >
+  <ion-icon [name]="socket.connected?'volume-mute-outline':'volume-high-outline'"></ion-icon>
+</div>

@@ -16,7 +16,7 @@
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
+@import "~@ionic/angular/css/display.css";
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,3 +24,16 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+.toastMarginTop {
+    margin-top: 0em;
+}
+
+ion-toast {
+    --border-radius: 5px;
+    --background: var(--ion-color-light);
+    color: var(--ion-color-dark);
+    // --width: 100%;
+    --end: 4px;
+    --start: 4px;
+}

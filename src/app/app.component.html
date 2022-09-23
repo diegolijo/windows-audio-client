@@ -4,11 +4,16 @@
     <ion-menu contentId="main-content" type="overlay">
       <!-- (ionWillOpen)="onOpenMenu($event)" (ionDidClose)="onCloseMenu()" -->
       <ion-content color="dark">
+        <ion-button class="btn-qr" size="small" fill="solid" expand="block" (click)="onClickScan()">
+          leer QR
+        </ion-button>
+        <hr>
         <div class="ipdiv">
           <div>host IP:</div>
-          <ion-input [value]="this.constants.currentIp" (ionChange)="onChangeIp($event)"></ion-input>
+          <ion-input inputmode="decimal" [(ngModel)]="this.constants.currentIp[0]" (ionChange)="onChangeIp($event)"></ion-input>
         </div>
         <hr>
+        <div *ngFor="let ip of this.constants.currentIp">{{ip}}</div>
       </ion-content>
 
 
