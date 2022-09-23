@@ -19,9 +19,10 @@ export interface IappLoader {
 @Injectable()
 export class Helper {
 
+  public appLoader: IappLoader = { shown: false };
   private toastMgs: HTMLIonToastElement;
   private timeOutLoader: any;
-  private appLoader: IappLoader = { shown: false };
+
 
   constructor(
     private device: Device,
@@ -60,8 +61,8 @@ export class Helper {
     return new Promise(async (resolve, reject) => {
       try {
         if (!this.appLoader.shown) {
-          console.log('abrir loader, no hay uno anterior');
           this.appLoader.shown = true;
+          console.log('abrir loader, no hay uno anterior');
           this.appLoader.idFn = idFn || '';
           let opt;
           if (options) {
@@ -76,9 +77,9 @@ export class Helper {
             };
           }
           this.appLoader = await this.loadingCtrl.create(options || opt);
-          this.appLoader.shown = true;
           this.appLoader.idFn = idFn || '';
           await this.appLoader.present();
+          this.appLoader.shown = true;
           await this.setLoaderTimeout();
         } else if (this.appLoader.shown) {
           console.log('cambiar mensaje a loader ' + (msg || 'sin-mensaje.') + 'Anterior idFn: ' + this.appLoader.idFn);
@@ -115,7 +116,7 @@ export class Helper {
                 this.timeOutLoader = null;
               }
               this.appLoader.shown = false;
-            } else if (!this.appLoader.idFn) {
+            } else if (this.appLoader && !this.appLoader.idFn) {
               console.log('cerrar loader sin idFn');
               this.appLoader.dismiss();
               if (this.timeOutLoader) {
@@ -127,7 +128,7 @@ export class Helper {
               console.log('intentamos cerrar un loader anterior');
             }
           }
-        }, idFn ? 500 : 1);
+        }, idFn ? 500 : 10);
         resolve(true);
       } catch (err) {
         reject(err);

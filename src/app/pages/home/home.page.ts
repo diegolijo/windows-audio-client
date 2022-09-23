@@ -19,14 +19,14 @@ export class HomePage implements OnInit {
     public socket: SocketManager,
     private storage: StorageManager,
     private ngZone: NgZone,
-    private helper: Helper
+    public helper: Helper
 
   ) { }
 
   async ngOnInit() {
     try {
       this.width = window.innerWidth;
-      this.height = window.innerHeight * 0.65;
+      this.height = window.innerHeight * 0.78;
       this.subscribeToSocket();
       this.socket.init();
     } catch (err) {
@@ -44,6 +44,11 @@ export class HomePage implements OnInit {
 
   public onClickReconect() {
     this.reconnect();
+  }
+
+  public onClickMute() {
+    this.socket.sendMessage(0);
+    this.setRangeValue(0);
   }
 
   //***************************** FUNCTIONS *****************************/

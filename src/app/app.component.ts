@@ -30,7 +30,9 @@ export class AppComponent implements OnInit {
     this.subscribeToPauseResume();
     const result = await this.storage.getItem(Constants.SAVED_IP);
     this.constants.currentIp = result ? result : [Constants.DEFAULT_IP];
+    this.checkSocketConection();
   }
+
 
   /**************************************  view EVENTS *******************************************/
   public onChangeIp(event) {
@@ -45,11 +47,8 @@ export class AppComponent implements OnInit {
         const barcodeData = await this.barcodeScanner.scan();
         console.log('Barcode data', barcodeData);
         const ip = JSON.parse(barcodeData.text);
-        this.constants.currentIp = this.constants.currentIp.filter((el) => el !== ip);
-        this.constants.currentIp.unshift(ip);
-        this.storage.setItem(Constants.SAVED_IP, this.constants.currentIp);
+        this.setIpTopPosition(ip);
         this.socket.destroy();
-
         this.socket.init();
       });
     } catch (err) {
@@ -57,12 +56,32 @@ export class AppComponent implements OnInit {
     }
   }
 
+
+  public onClickLine(ip) {
+    this.setIpTopPosition(ip);
+  }
+
+
+  //***************************************** FUNCTION ******************************************/
+  private setIpTopPosition(ip: any) {
+    this.constants.currentIp = this.constants.currentIp.filter((el) => el !== ip);
+    this.constants.currentIp.unshift(ip);
+    this.storage.setItem(Constants.SAVED_IP, this.constants.currentIp);
+  }
+
+  private checkSocketConection() {
+    setInterval(() => {
+      if (!this.socket.isConnected) {
+        this.socket.init();
+      }
+    }, 1000 * 60);
+  }
+
   /**************************************  app EVENTS *******************************************/
 
   private async subscribeToPauseResume() {
     if (!this.resumeSubscription || this.resumeSubscription.closed) {
       this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
-
         this.socket.init();
       }));
     }
@@ -72,5 +91,7 @@ export class AppComponent implements OnInit {
       }));
     }
   }
+
+
 
 }

@@ -37,3 +37,6 @@ ion-toast {
     --end: 4px;
     --start: 4px;
 }
+.app-loader {
+    --spinner-color: var(--ion-color-dark);
+}

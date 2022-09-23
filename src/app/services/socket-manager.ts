@@ -9,7 +9,7 @@ import { Helper } from './helper';
 @Injectable()
 export class SocketManager {
 
-  public connected = false;
+  public isConnected = false;
   private socket: Socket;
   private socketEvents = new Subject<any>();
   private url = '';
@@ -25,7 +25,7 @@ export class SocketManager {
     return new Promise(async (rs, rj) => {
       try {
         await this.platform.ready();
-        this.helper.showLoader('conectando...');
+        await this.helper.showLoader('...en el glory hole ♪♪');
         this.url = `http://${this.constants.currentIp[0]}:${Constants.SOCKET_PORT}`;
         this.socket = io(this.url,
           {
@@ -45,17 +45,17 @@ export class SocketManager {
         });
 
         this.socket.on('connect', () => {
-          this.connected = true;
+          this.isConnected = true;
           this.onResponse('connect');
         });
 
         this.socket.on('disconnect', () => {
-          this.connected = false;
+          this.isConnected = false;
           this.onResponse('disconnect');
         });
 
         this.socket.on('connect_error', () => {
-          this.connected = false;
+          this.isConnected = false;
           this.onResponse('connect_error');
         });
         this.connect();
@@ -78,7 +78,9 @@ export class SocketManager {
   }
 
   public sendMessage(value) {
-    this.socket.emit('value', { value: value });
+    if (this.isConnected) {
+      this.socket.emit('value', { value: value });
+    }
   }
 
   private connect() {
