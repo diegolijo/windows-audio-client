@@ -1,7 +1,6 @@
-import { Component, NgZone, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit } from '@angular/core';
 import { Helper } from 'src/app/services/helper';
 import { SocketManager } from '../../services/socket-manager';
-import { StorageManager } from '../../services/storage';
 
 @Component({
   selector: 'app-home',
@@ -15,9 +14,7 @@ export class HomePage implements OnInit {
   height: number;
 
   constructor(
-    private renderer: Renderer2,
     public socket: SocketManager,
-    private storage: StorageManager,
     private ngZone: NgZone,
     public helper: Helper
 
@@ -26,7 +23,7 @@ export class HomePage implements OnInit {
   async ngOnInit() {
     try {
       this.width = window.innerWidth;
-      this.height = window.innerHeight * 0.78;
+      this.height = window.innerHeight * 0.68;
       this.subscribeToSocket();
       this.socket.init();
     } catch (err) {
@@ -49,6 +46,23 @@ export class HomePage implements OnInit {
   public onClickMute() {
     this.socket.sendMessage(0);
     this.setRangeValue(0);
+  }
+
+  public onClickLeft() {
+    this.socket.sendKeyCode(37);
+  }
+
+  public onClickSpace() {
+    this.socket.sendKeyCode(32);
+  }
+
+  public onClickRight() {
+    this.socket.sendKeyCode(39);
+  }
+
+  // pantalla completa netflix
+  public onClickF() {
+    this.socket.sendKeyCode(70);
   }
 
   //***************************** FUNCTIONS *****************************/

@@ -18,12 +18,15 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  app-father {
+    margin-top: -5em;
+  }
 }
 
 .conn-icon {
-  bottom: 1em;
+  top: 0.5em;
   position: absolute;
-  right: 1em;
+  right: 0.5em;
   font-size: 2em;
 }
 
@@ -32,4 +35,20 @@
   position: absolute;
   left: 1em;
   font-size: 2em;
+}
+
+.tool-bar{
+  position: absolute;
+  width: 100%;
+  display: flex;
+  bottom: 2em;
+  justify-content: space-around;
+  ion-icon{
+    font-size: 3.5em;
+  }
+  ion-button{
+    min-height: 4em;
+    --border-radius: 5em;
+  }
+
 }

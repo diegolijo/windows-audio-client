@@ -25,7 +25,7 @@ export class SocketManager {
     return new Promise(async (rs, rj) => {
       try {
         await this.platform.ready();
-        await this.helper.showLoader('...en el glory hole ♪♪');
+        await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
         this.url = `http://${this.constants.currentIp[0]}:${Constants.SOCKET_PORT}`;
         this.socket = io(this.url,
           {
@@ -79,7 +79,13 @@ export class SocketManager {
 
   public sendMessage(value) {
     if (this.isConnected) {
-      this.socket.emit('value', { value: value });
+      this.socket.emit('value', { key: 'message', value: value });
+    }
+  }
+
+  public sendKeyCode(value) {
+    if (this.isConnected) {
+      this.socket.emit('value', { key: 'keycode', value: value });
     }
   }
 

@@ -8,7 +8,29 @@
 </div>
 
 <ion-icon class="conn-icon" name="globe-outline"
-  [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'" (click)="onClickReconect()"></ion-icon>
+  [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'" (click)="onClickReconect()">
+</ion-icon>
 <!-- radio-outline  -->
 
-<ion-icon class="btn-mute" [name]="socket.isConnected?'volume-mute':'volume-high'" (click)="onClickMute()"></ion-icon>
+<!-- <ion-icon class="btn-mute" [name]="socket.isConnected?'volume-mute':'volume-high'" (click)="onClickMute()"></ion-icon> -->
+
+<div class="tool-bar">
+
+  <ion-button fill="clear" color="dark" (click)="onClickLeft()">
+    <ion-icon name="play-back-circle-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button fill="clear" color="dark" (click)="onClickSpace()">
+    <ion-icon name="play-circle-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button fill="clear" color="dark" (click)="onClickRight()">
+    <ion-icon name="play-forward-circle-outline"></ion-icon>
+  </ion-button>
+
+  <ion-button fill="clear" color="dark" (click)="onClickF()">
+    <ion-icon name="expand-outline"></ion-icon>
+  </ion-button>
+
+
+</div>
