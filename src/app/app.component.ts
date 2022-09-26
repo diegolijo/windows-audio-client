@@ -22,7 +22,8 @@ export class AppComponent implements OnInit {
     public constants: Constants,
     private barcodeScanner: BarcodeScanner,
     private ngZone: NgZone,
-    private socket: SocketManager
+    private socket: SocketManager,
+    private helper: Helper
   ) { }
 
   async ngOnInit() {
@@ -49,6 +50,8 @@ export class AppComponent implements OnInit {
         const ip = JSON.parse(barcodeData.text);
         this.setIpTopPosition(ip);
         this.socket.destroy();
+        await this.platform.ready();
+        await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
         this.socket.init();
       });
     } catch (err) {
@@ -72,6 +75,7 @@ export class AppComponent implements OnInit {
   private checkSocketConection() {
     setInterval(() => {
       if (!this.socket.isConnected) {
+        this.helper.showLoader('conectando ♪ ♫ ♪ ...');
         this.socket.init();
       }
     }, 1000 * 60);
@@ -82,6 +86,7 @@ export class AppComponent implements OnInit {
   private async subscribeToPauseResume() {
     if (!this.resumeSubscription || this.resumeSubscription.closed) {
       this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
+        this.helper.showLoader('conectando ♪ ♫ ♪ ...');
         this.socket.init();
       }));
     }

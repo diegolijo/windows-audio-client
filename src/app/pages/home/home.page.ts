@@ -1,4 +1,5 @@
 import { Component, NgZone, OnInit } from '@angular/core';
+import { Platform } from '@ionic/angular';
 import { Helper } from 'src/app/services/helper';
 import { SocketManager } from '../../services/socket-manager';
 
@@ -16,15 +17,18 @@ export class HomePage implements OnInit {
   constructor(
     public socket: SocketManager,
     private ngZone: NgZone,
-    public helper: Helper
+    public helper: Helper,
+    private platform: Platform
 
   ) { }
 
   async ngOnInit() {
     try {
+      await this.platform.ready();
       this.width = window.innerWidth;
       this.height = window.innerHeight * 0.68;
       this.subscribeToSocket();
+      await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
       this.socket.init();
     } catch (err) {
       console.log(JSON.stringify(err));
@@ -73,6 +77,7 @@ export class HomePage implements OnInit {
 
   private reconnect() {
     try {
+      this.helper.showLoader('conectando ♪ ♫ ♪ ...');
       this.socket.destroy();
       this.socket.init();
     } catch (err) {

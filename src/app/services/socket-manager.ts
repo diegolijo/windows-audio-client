@@ -25,7 +25,6 @@ export class SocketManager {
     return new Promise(async (rs, rj) => {
       try {
         await this.platform.ready();
-        await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
         this.url = `http://${this.constants.currentIp[0]}:${Constants.SOCKET_PORT}`;
         this.socket = io(this.url,
           {

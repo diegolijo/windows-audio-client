@@ -128,7 +128,7 @@ export class Helper {
               console.log('intentamos cerrar un loader anterior');
             }
           }
-        }, idFn ? 500 : 10);
+        }, idFn ? 500 : 500);
         resolve(true);
       } catch (err) {
         reject(err);
@@ -172,7 +172,7 @@ export class Helper {
 
   private async setLoaderTimeout() {
     if (this.timeOutLoader) {
-      await clearTimeout(this.timeOutLoader);
+      clearTimeout(this.timeOutLoader);
       this.timeOutLoader = null;
     }
     this.timeOutLoader = setTimeout(async () => {
