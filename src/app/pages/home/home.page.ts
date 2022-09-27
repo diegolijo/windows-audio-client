@@ -2,6 +2,7 @@ import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
 import { Helper } from 'src/app/services/helper';
 import { SocketManager } from '../../services/socket-manager';
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 
 @Component({
   selector: 'app-home',
@@ -19,7 +20,6 @@ export class HomePage implements OnInit {
     private ngZone: NgZone,
     public helper: Helper,
     private platform: Platform
-
   ) { }
 
   async ngOnInit() {
@@ -33,7 +33,6 @@ export class HomePage implements OnInit {
     } catch (err) {
       console.log(JSON.stringify(err));
     }
-
   }
 
   //******************************** VIEW ********************************/
@@ -87,15 +86,6 @@ export class HomePage implements OnInit {
     }
   }
 
-  //***************************** SUBSCRIBE *****************************/
-  private subscribeToSocket() {
-    this.socket.getSocketObservable().subscribe(value => {
-      this.ngZone.run(() => {
-        this.handlerSocketResponse(value);
-      });
-    });
-  }
-
   private handlerSocketResponse(value: any) {
     // console.log(JSON.stringify(value, null, 4));
     switch (value.key) {
@@ -119,10 +109,21 @@ export class HomePage implements OnInit {
 
         break;
       case '':
-
         break;
       default:
         break;
     }
   }
+
+  //***************************** SUBSCRIBES *****************************/
+  private subscribeToSocket() {
+    this.socket.getSocketObservable().subscribe(value => {
+      this.ngZone.run(() => {
+        this.handlerSocketResponse(value);
+      });
+    });
+  }
+
+
+
 }

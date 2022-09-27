@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Storage } from '@ionic/storage';
+import { Storage } from '@ionic/storage-angular';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 
 @Injectable()
@@ -10,9 +10,7 @@ export class StorageManager {
     public platform: Platform,
     public storageBrowser: Storage,
     public storageNative: NativeStorage
-  ) {
-    this.storageBrowser.create();
-  }
+  ) { }
 
   public setItem(key: string, value: any): Promise<void> {
     if (this.platform.is('cordova')) {

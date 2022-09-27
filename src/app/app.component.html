@@ -10,7 +10,8 @@
         <hr>
         <div class="ipdiv">
           <div>host IP:</div>
-          <ion-input inputmode="decimal" [(ngModel)]="this.constants.currentIp[0]" (ionChange)="onChangeIp($event)"></ion-input>
+          <ion-input inputmode="decimal" [(ngModel)]="this.constants.currentIp[0]" (ionChange)="onChangeIp($event)">
+          </ion-input>
         </div>
         <hr>
         <div class="list-item" *ngFor="let ip of this.constants.currentIp" (click)="onClickLine(ip)">{{ip}}</div>

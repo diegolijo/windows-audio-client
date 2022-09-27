@@ -11,12 +11,13 @@ import { Constants } from './services/config/constants';
 import { Helper } from './services/helper';
 import { Device } from '@awesome-cordova-plugins/device/ngx';
 import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
-import { Storage } from '@ionic/storage';
 import { NativeStorage } from '@awesome-cordova-plugins/native-storage/ngx';
 import { StorageManager } from './services/storage';
 import { ComponentsModule } from './components/components.module';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { FormsModule } from '@angular/forms';
+import { IonicStorageModule } from '@ionic/storage-angular';
+import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,7 +27,8 @@ import { FormsModule } from '@angular/forms';
     AppRoutingModule,
     HttpClientModule,
     ComponentsModule,
-    FormsModule
+    FormsModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     // app services
@@ -36,9 +38,9 @@ import { FormsModule } from '@angular/forms';
     Helper,
     StorageManager,
     //cordova plugins
+    AppMinimize,
     SplashScreen,
     Device,
-    Storage,
     NativeStorage,
     BarcodeScanner,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }

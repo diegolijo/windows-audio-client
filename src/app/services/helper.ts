@@ -100,6 +100,10 @@ export class Helper {
   public async closeLoader(idFn?: string, exception?: boolean): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       try {
+        const loader = await this.loadingCtrl.getTop();
+        if (loader) {
+          loader.dismiss();
+        }
         setTimeout(async () => {
           if (exception && this.appLoader.shown) {
             console.log('cerrar loader por excepción');
