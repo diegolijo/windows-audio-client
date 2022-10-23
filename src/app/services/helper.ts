@@ -39,12 +39,6 @@ export class Helper {
     this.splashScreen.hide();
   }
 
-  public buildURL() {
-
-  }
-
-
-
   /**
    * @param msg mensaje del loader
    * @param idFn función desde la que se lanza el loader

@@ -9,10 +9,10 @@ export class Http {
   ) { }
 
 
-  public post(url: string, body: any) {
+  public get(url: string) {
     return new Promise((resolve: any, reject: any) => {
-      this.httpBrowser.post(url, body).subscribe((res: any) => {
-        resolve(res);
+      this.httpBrowser.get(url, { responseType: 'text' }).subscribe((res: any) => {
+        resolve(JSON.parse(res));
       }, (err: any) => {
         reject(err);
       });

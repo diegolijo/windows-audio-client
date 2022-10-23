@@ -23,11 +23,43 @@
   }
 }
 
-.conn-icon {
+.conn-icon-key {
+  --border-radius: 1em;
   top: 0.5em;
   position: absolute;
   right: 0.5em;
   font-size: 2em;
+  max-width: 2em;
+  min-height: 2em;
+  ion-icon {
+    position: absolute;
+  }
+}
+
+.conn-icon {
+  --border-radius: 1em;
+  top: 2.5em;
+  position: absolute;
+  right: 0.5em;
+  font-size: 2em;
+  max-width: 2em;
+  min-height: 2em;
+  ion-icon {
+    position: absolute;
+  }
+}
+
+.sensor-icon {
+  --border-radius: 1em;
+  top: 4.5em;
+  position: absolute;
+  right: 0.5em;
+  font-size: 2em;
+  max-width: 2em;
+  min-height: 2em;
+  ion-icon {
+    position: absolute;
+  }
 }
 
 .btn-mute {
@@ -37,18 +69,44 @@
   font-size: 2em;
 }
 
-.tool-bar{
+.tool-bar {
   position: absolute;
   width: 100%;
   display: flex;
   bottom: 2em;
   justify-content: space-around;
-  ion-icon{
+  ion-icon {
     font-size: 3.5em;
   }
-  ion-button{
+  ion-button {
     min-height: 4em;
     --border-radius: 5em;
   }
+}
+.keyboard {
+  margin-top: 5em;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+.pads {
+  display: flex;
+  width: 40%;
+  height: 1.2em;
+  background: #218dbe;
+  margin: 0em 0em 0.5em 0em;
+  justify-content: center;
+  align-items: center;
+  font-size: 6em;
+  border-radius: 0.2em;
+}
 
+.temp_hum {
+  position: absolute;
+  bottom: 7em;
+  right: 2em;
 }

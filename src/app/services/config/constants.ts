@@ -8,8 +8,10 @@ export class Constants {
 
   public static readonly HTTP_PORT = '8015';
   public static readonly SOCKET_PORT = '8010';
-  static readonly SAVED_IP = 'ip';
-  static DEFAULT_IP = '192.168.1.133';
+  public static readonly SAVED_IP = 'ip';
+  public static readonly DEFAULT_IP = '192.168.1.133';
+
+  public static readonly SENSOR_IP = '192.168.1.136';
 
   public currentIp: string[] = [Constants.DEFAULT_IP];
 

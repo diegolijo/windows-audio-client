@@ -1,21 +1,40 @@
 <ion-menu-button class="menu-btn"></ion-menu-button>
 
-<div class="father">
+
+<div [hidden]="viewMode" class="father">
   <app-father [width]="width" [slide-width]="5" [height]="height" [father-height]="100" [color-off]="'#001c2a'"
     [color-active]="'#04bbff'" [scale]="100" [max-decimals]="0" [input-value]="input" [isConnected]="socket.isConnected"
     (onchange)="onChangeRangeValue($event)">
   </app-father>
 </div>
 
-<ion-icon class="conn-icon" name="globe-outline"
-  [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'" (click)="onClickReconect()">
-</ion-icon>
+<ion-button class="conn-icon-key" fill="clear" (click)=" !viewMode ? viewMode = 'keyboard': viewMode=''">
+  <ion-icon [name]="viewMode?'volume-high-outline':'keypad-outline'"
+    [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
+  </ion-icon>
+</ion-button>
+
+<ion-button class="conn-icon" fill="clear" (click)="onClickReconect()">
+  <ion-icon [hidden]="viewMode" name="globe-outline"
+    [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
+  </ion-icon>
+</ion-button>
+
+<ion-button [hidden]="viewMode"  class="sensor-icon" fill="clear" (click)="onClickMcuSensor()">
+  <ion-icon name="umbrella-outline" [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
+  </ion-icon>
+</ion-button>
 <!-- radio-outline  -->
 
 <!-- <ion-icon class="btn-mute" [name]="socket.isConnected?'volume-mute':'volume-high'" (click)="onClickMute()"></ion-icon> -->
 
-<div class="tool-bar">
+<div *ngIf="sensorValue" class="temp_hum">
+  Tª: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{sensorValue.temperatura}}
+  <br>
+  Hum: &nbsp;&nbsp;{{sensorValue.humedad}}
+</div>
 
+<div [hidden]="viewMode" class="tool-bar">
   <ion-button fill="clear" color="dark" (click)="onClickLeft()">
     <ion-icon name="play-back-circle-outline"></ion-icon>
   </ion-button>
@@ -31,6 +50,12 @@
   <ion-button fill="clear" color="dark" (click)="onClickF()">
     <ion-icon name="expand-outline"></ion-icon>
   </ion-button>
+</div>
 
+
+<div *ngIf="viewMode==='keyboard'" class="keyboard">
+  <div *ngFor="let pad of [11,12,13,14,15,16,17,18]" class="pads" (click)="onClickPad(pad)">
+    {{pad}}
+  </div>
 
 </div>

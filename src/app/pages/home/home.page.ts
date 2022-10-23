@@ -1,8 +1,12 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Helper } from 'src/app/services/helper';
+import { Helper } from '../../services/helper';
 import { SocketManager } from '../../services/socket-manager';
 import { AppMinimize } from '@ionic-native/app-minimize/ngx';
+import { Http } from '../../services/http';
+import { Constants } from 'src/app/services/config/constants';
+import { HttpHeaders, HttpParamsOptions } from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -15,11 +19,15 @@ export class HomePage implements OnInit {
   width: number;
   height: number;
 
+  viewMode = '';
+  sensorValue: any;
+
   constructor(
     public socket: SocketManager,
     private ngZone: NgZone,
     public helper: Helper,
-    private platform: Platform
+    private platform: Platform,
+    private http: Http
   ) { }
 
   async ngOnInit() {
@@ -46,6 +54,10 @@ export class HomePage implements OnInit {
     this.reconnect();
   }
 
+  public onClickMcuSensor() {
+    this.postSensor();
+  }
+
   public onClickMute() {
     this.socket.sendMessage(0);
     this.setRangeValue(0);
@@ -67,6 +79,11 @@ export class HomePage implements OnInit {
   public onClickF() {
     this.socket.sendKeyCode(70);
   }
+
+  public onClickPad(pad) {
+    this.socket.sendKeyCode(pad);
+  }
+
 
   //***************************** FUNCTIONS *****************************/
 
@@ -114,6 +131,11 @@ export class HomePage implements OnInit {
         break;
     }
   }
+
+  private async postSensor() {
+    this.sensorValue = await this.http.get(`http://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}`);
+  }
+
 
   //***************************** SUBSCRIBES *****************************/
   private subscribeToSocket() {

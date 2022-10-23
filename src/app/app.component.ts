@@ -105,6 +105,7 @@ export class AppComponent implements OnInit {
     }
     if (!this.pauseSubscription || this.pauseSubscription.closed) {
       this.pauseSubscription = await this.platform.pause.subscribe(() => this.ngZone.run(() => {
+        this.helper.closeLoader();
         this.socket.destroy();
       }));
     }
