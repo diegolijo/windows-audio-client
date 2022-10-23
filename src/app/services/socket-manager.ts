@@ -87,6 +87,18 @@ export class SocketManager {
       this.socket.emit('value', { key: 'keycode', value: value });
     }
   }
+  // ------------------ arduino socket -------------------
+  public initArduinoSocket(onMessage, onOpen?, onClose?) {
+    console.log('Trying to open a WebSocket connection...');
+    const gateway = `ws://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/ws`;
+    let websocket;
+    websocket = new WebSocket(gateway);
+    websocket.onopen = onOpen;
+    websocket.onclose = onClose;
+    websocket.onmessage = onMessage; // <-- add this line
+  }
+
+  //--------------------------------------------------------
 
   private connect() {
     this.socket.connect();
@@ -99,6 +111,7 @@ export class SocketManager {
   private onResponse(key, data?) {
     this.socketEvents.next({ key: key, data });
   }
+
 
 
 

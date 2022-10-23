@@ -1,12 +1,10 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, NgZone, OnInit } from '@angular/core';
 import { Platform } from '@ionic/angular';
-import { Helper } from '../../services/helper';
-import { SocketManager } from '../../services/socket-manager';
-import { AppMinimize } from '@ionic-native/app-minimize/ngx';
-import { Http } from '../../services/http';
 import { Constants } from 'src/app/services/config/constants';
-import { HttpHeaders, HttpParamsOptions } from '@angular/common/http';
+import { Helper } from '../../services/helper';
+import { Http } from '../../services/http';
+import { SocketManager } from '../../services/socket-manager';
 
 @Component({
   selector: 'app-home',
@@ -38,6 +36,7 @@ export class HomePage implements OnInit {
       this.subscribeToSocket();
       await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
       this.socket.init();
+      this.socket.initArduinoSocket((event) => this.onMessage(event), (event) => this.onOpen(event), (event) => this.onClose(event));
     } catch (err) {
       console.log(JSON.stringify(err));
     }
@@ -86,6 +85,22 @@ export class HomePage implements OnInit {
 
 
   //***************************** FUNCTIONS *****************************/
+
+  // ------------------ socket arduino ------------------------
+  private onMessage(event) {
+    const value = JSON.parse(event.data);
+
+    this.socket.sendMessage(value.encoder);
+  }
+
+  private onOpen(event) {
+    console.log(event)
+  }
+
+  private onClose(event) {
+    console.log(event)
+  }
+  // ----------------------------------------------------------
 
   private setRangeValue(value: number) {
     this.input = value;
@@ -149,3 +164,8 @@ export class HomePage implements OnInit {
 
 
 }
+
+// export ANDROID_SDK_ROOT="$HOME/Android/Sdk"
+// export JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64"
+// export GRADLE_HOME="/opt/gradle/gradle-7.4.2"
+// export PATH=$PATH:$HOME"/Android/Sdk/platform-tools"

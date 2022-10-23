@@ -11,7 +11,7 @@ export class Constants {
   public static readonly SAVED_IP = 'ip';
   public static readonly DEFAULT_IP = '192.168.1.133';
 
-  public static readonly SENSOR_IP = '192.168.1.136';
+  public static readonly SENSOR_IP = '192.168.1.128';
 
   public currentIp: string[] = [Constants.DEFAULT_IP];
 
