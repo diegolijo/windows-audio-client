@@ -1,8 +1,7 @@
 /* eslint-disable max-len */
 /* eslint-disable @angular-eslint/no-input-rename */
 import { Component, ElementRef, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { GestureController, GestureDetail } from '@ionic/angular';
-import { Observable } from 'rxjs';
+import { GestureController } from '@ionic/angular';
 
 @Component({
   selector: 'app-father',
@@ -44,7 +43,7 @@ export class FatherComponent implements OnInit, OnChanges {
     this.loadLongPressOnElement();
     this.pxTop = this.height - this.fatherheight / 2;
     setTimeout(() => {
-      this.pxLeft = (this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 2);
+      this.pxLeft = ((this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 3));
     }, 100);
   }
 
@@ -57,8 +56,6 @@ export class FatherComponent implements OnInit, OnChanges {
       this.activeHeight = this.height - this.pxTop - this.fatherheight / 2;
       this.pxTopActive = - this.activeHeight;
     }
-
-
   }
 
   loadLongPressOnElement() {
@@ -86,7 +83,6 @@ export class FatherComponent implements OnInit, OnChanges {
     });
     gesture.enable(true);
   }
-
 
 
   private calculateViewPosition(currentY) {

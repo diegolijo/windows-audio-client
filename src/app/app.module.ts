@@ -18,6 +18,9 @@ import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
 import { FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage-angular';
 import { AppMinimize } from '@ionic-native/app-minimize/ngx';
+import { DirectivesModule } from './directives/directives-module';
+import { Vibration } from '@awesome-cordova-plugins/vibration/ngx';
+import { WifiWizard2 } from '@awesome-cordova-plugins/wifi-wizard-2/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -28,7 +31,8 @@ import { AppMinimize } from '@ionic-native/app-minimize/ngx';
     HttpClientModule,
     ComponentsModule,
     FormsModule,
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    DirectivesModule
   ],
   providers: [
     // app services
@@ -37,12 +41,14 @@ import { AppMinimize } from '@ionic-native/app-minimize/ngx';
     Constants,
     Helper,
     StorageManager,
-    //cordova plugins
+    // cordova plugins
+    Vibration,
     AppMinimize,
     SplashScreen,
     Device,
     NativeStorage,
     BarcodeScanner,
+    WifiWizard2,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],

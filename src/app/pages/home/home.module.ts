@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { ComponentsModule } from '../../components/components.module';
+import { DirectivesModule } from 'src/app/directives/directives-module';
 
 
 @NgModule({
@@ -15,6 +16,7 @@ import { ComponentsModule } from '../../components/components.module';
     IonicModule,
     HomePageRoutingModule,
     ComponentsModule,
+    DirectivesModule
   ],
   declarations: [HomePage]
 })

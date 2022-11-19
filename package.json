@@ -1,6 +1,6 @@
 {
   "name": "windows-volume-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Diego Santiago",
   "homepage": "https://www.vayapedal.com/",
   "engines": {
@@ -29,6 +29,8 @@
     "@awesome-cordova-plugins/device": "^5.45.0",
     "@awesome-cordova-plugins/native-storage": "^5.45.0",
     "@awesome-cordova-plugins/splash-screen": "^5.45.0",
+    "@awesome-cordova-plugins/vibration": "^6.1.0",
+    "@awesome-cordova-plugins/wifi-wizard-2": "^6.2.0",
     "@ionic-native/app-minimize": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic/angular": "^6.1.9",
@@ -64,6 +66,9 @@
     "cordova-plugin-nativestorage": "^2.3.2",
     "cordova-plugin-splashscreen": "5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
+    "cordova-plugin-vibration": "^3.1.1",
+    "cordova-plugin-wifiwizard2": "^3.1.1",
+    "es6-promise-plugin": "^4.1.0",
     "eslint": "^7.6.0",
     "eslint-plugin-import": "2.22.1",
     "eslint-plugin-jsdoc": "30.7.6",
@@ -93,7 +98,9 @@
       "phonegap-plugin-barcodescanner": {
         "ANDROID_SUPPORT_V4_VERSION": "27.+"
       },
-      "cordova-plugin-appminimize": {}
+      "cordova-plugin-appminimize": {},
+      "cordova-plugin-vibration": {},
+      "wifiwizard2": {}
     },
     "platforms": [
       "android"

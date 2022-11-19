@@ -7,9 +7,9 @@
 }
 
 .menu-btn {
-  position: absolute;
-  top: 0.2em;
-  left: 0.5em;
+  top: 0.4em;
+  width: 2em;
+  font-size: 3em;
 }
 
 .father {
@@ -19,17 +19,24 @@
   justify-content: center;
   align-items: center;
   app-father {
-    margin-top: -5em;
+    margin-top: -1.5em;
   }
+}
+
+.top-btns {
+  position: absolute;
+  width: 100%;
+  top: 0.5em;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .conn-icon-key {
   --border-radius: 1em;
-  top: 0.5em;
-  position: absolute;
-  right: 0.5em;
   font-size: 2em;
-  max-width: 2em;
+  min-width: 3em;
   min-height: 2em;
   ion-icon {
     position: absolute;
@@ -38,9 +45,6 @@
 
 .conn-icon {
   --border-radius: 1em;
-  top: 2.5em;
-  position: absolute;
-  right: 0.5em;
   font-size: 2em;
   max-width: 2em;
   min-height: 2em;
@@ -51,22 +55,12 @@
 
 .sensor-icon {
   --border-radius: 1em;
-  top: 4.5em;
-  position: absolute;
-  right: 0.5em;
   font-size: 2em;
   max-width: 2em;
   min-height: 2em;
   ion-icon {
     position: absolute;
   }
-}
-
-.btn-mute {
-  bottom: 1em;
-  position: absolute;
-  left: 1em;
-  font-size: 2em;
 }
 
 .tool-bar {
@@ -93,7 +87,7 @@
   width: 100%;
   height: 100%;
 }
-.pads {
+.pad {
   display: flex;
   width: 40%;
   height: 1.2em;

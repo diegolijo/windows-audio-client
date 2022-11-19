@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, NgZone, OnInit } from '@angular/core';
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner/ngx';
+import { WifiWizard2 } from '@awesome-cordova-plugins/wifi-wizard-2/ngx';
 import { AppMinimize } from '@ionic-native/app-minimize/ngx';
 import { MenuController, Platform } from '@ionic/angular';
 import { Storage } from '@ionic/storage-angular';
@@ -30,7 +31,8 @@ export class AppComponent implements OnInit {
     private socket: SocketManager,
     private helper: Helper,
     private appMinimize: AppMinimize,
-    private menuCntlr: MenuController
+    private menuCntlr: MenuController,
+    private wifiWizard2: WifiWizard2
   ) { }
 
   async ngOnInit() {
@@ -86,23 +88,34 @@ export class AppComponent implements OnInit {
   /**************************************  app EVENTS *******************************************/
 
   private checkSocketConection() {
-    setInterval(() => {
+    setInterval(async () => {
       if (!this.socket.isConnected) {
-        this.helper.showLoader('conectando ♪ ♫ ♪ ...');
-        this.socket.init();
+        try {
+          this.helper.isWifiConected = await this.wifiWizard2.getConnectedSSID();
+          this.helper.showLoader('conectando ♪ ♫ ♪ ...');
+          this.socket.init();
+        } catch (err) {
+          delete this.helper.isWifiConected;
+        }
       }
     }, 1000 * 60);
   }
 
   private async subscribeToPauseResume() {
     if (!this.resumeSubscription || this.resumeSubscription.closed) {
-      this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(() => {
+      this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(async () => {
         if (!this.socket.isConnected) {
-          this.helper.showLoader('conectando ♪ ♫ ♪ ...');
-          this.socket.init();
+          try {
+            this.helper.isWifiConected = await this.wifiWizard2.getConnectedSSID();
+            this.helper.showLoader('conectando ♪ ♫ ♪ ...');
+            this.socket.init();
+          } catch (err) {
+            delete this.helper.isWifiConected;
+          }
         }
       }));
     }
+
     if (!this.pauseSubscription || this.pauseSubscription.closed) {
       this.pauseSubscription = await this.platform.pause.subscribe(() => this.ngZone.run(() => {
         this.helper.closeLoader();

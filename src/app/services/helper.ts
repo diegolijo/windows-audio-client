@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { Device } from '@awesome-cordova-plugins/device/ngx';
+import { SplashScreen } from '@awesome-cordova-plugins/splash-screen/ngx';
 import { IonicSafeString, LoadingController, ToastController } from '@ionic/angular';
 
 export interface IappLoader {
@@ -19,16 +19,18 @@ export interface IappLoader {
 @Injectable()
 export class Helper {
 
+  public isWifiConected: any;
   public appLoader: IappLoader = { shown: false };
   private toastMgs: HTMLIonToastElement;
   private timeOutLoader: any;
+
 
 
   constructor(
     private device: Device,
     private splashScreen: SplashScreen,
     private loadingCtrl: LoadingController,
-    private toastController: ToastController,
+    private toastController: ToastController
   ) { }
 
   public getDevice() {

@@ -1,32 +1,34 @@
-<ion-menu-button class="menu-btn"></ion-menu-button>
-
-
-<div [hidden]="viewMode" class="father">
-  <app-father [width]="width" [slide-width]="5" [height]="height" [father-height]="100" [color-off]="'#001c2a'"
+<div *ngIf="!viewMode" class="father">
+  <app-father #father [width]="width" [slide-width]="5" [height]="height" [father-height]="100" [color-off]="'#001c2a'"
     [color-active]="'#04bbff'" [scale]="100" [max-decimals]="0" [input-value]="input" [isConnected]="socket.isConnected"
-    (onchange)="onChangeRangeValue($event)">
+    (onchange)="onChangeRangeValue($event,father)">
   </app-father>
 </div>
 
-<ion-button class="conn-icon-key" fill="clear" (click)=" !viewMode ? viewMode = 'keyboard': viewMode=''">
-  <ion-icon [name]="viewMode?'volume-high-outline':'keypad-outline'"
-    [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
-  </ion-icon>
-</ion-button>
+<div class="top-btns">
+  <ion-menu-button class="menu-btn" color="secondary"></ion-menu-button>
 
-<ion-button class="conn-icon" fill="clear" (click)="onClickReconect()">
-  <ion-icon [hidden]="viewMode" name="globe-outline"
-    [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
-  </ion-icon>
-</ion-button>
+  <ion-button *ngIf="!viewMode && helper.isWifiConected" class="conn-icon" fill="clear" (click)="onClickReconect()">
+    <ion-icon name="globe-outline" [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
+    </ion-icon>
+  </ion-button>
 
-<ion-button [hidden]="viewMode"  class="sensor-icon" fill="clear" (click)="onClickMcuSensor()">
-  <ion-icon name="umbrella-outline" [color]="socket.isConnected?'success':helper.appLoader.shown?'warning':'danger'">
-  </ion-icon>
-</ion-button>
-<!-- radio-outline  -->
+  <ion-button *ngIf="!viewMode && !helper.isWifiConected" class="conn-icon" fill="clear" (click)="onClickWifi()">
+    <ion-icon name="wifi-outline" color="danger">
+    </ion-icon>
+  </ion-button>
 
-<!-- <ion-icon class="btn-mute" [name]="socket.isConnected?'volume-mute':'volume-high'" (click)="onClickMute()"></ion-icon> -->
+  <ion-button *ngIf="!viewMode" class="sensor-icon" fill="clear" color="secondary" (click)="onClickMcuSensor()">
+    <ion-icon name="umbrella-outline">
+    </ion-icon>
+  </ion-button>
+
+  <ion-button class="conn-icon-key" fill="clear" color="secondary" (click)="onClickViewMode()">
+    <ion-icon [name]="viewMode?'volume-high-outline':'keypad-outline'">
+    </ion-icon>
+  </ion-button>
+</div>
+
 
 <div *ngIf="sensorValue" class="temp_hum">
   Tª: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{sensorValue.temperatura}}
@@ -54,7 +56,8 @@
 
 
 <div *ngIf="viewMode==='keyboard'" class="keyboard">
-  <div *ngFor="let pad of [11,12,13,14,15,16,17,18]" class="pads" (click)="onClickPad(pad)">
+  <div #btnElement *ngFor="let pad of ['◄','►',3,4,5,6,7,8]" class="pad"
+    (appPress)="onClickPad(pad,$event, btnElement)">
     {{pad}}
   </div>
 

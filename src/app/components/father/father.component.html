@@ -1,10 +1,10 @@
 <div #elFather class="content" [ngStyle]="{'height.px': height,'width.px': width}">
     <img src="./assets/img/father.png" class="knob"
-        [ngStyle]="{'top.px': pxTop,'left.px': pxLeft ,'height.px': fatherheight }">
+        [ngStyle]="{'top.px': pxTop,'left.px': pxLeft ,'height.px': fatherheight, 'display': pxLeft? 'block':'none' }">
     <div
-        [ngStyle]="{'top.px': -fatherheight -5,'left.px': (width -slideWidth) / 2 ,'height.px': height,'width.px': slideWidth, 'background': colorOff}">
+        [ngStyle]="{'top.px': -fatherheight -5,'left.px': (width -slideWidth) / 2 ,'height.px': height,'width.px': slideWidth, 'background': colorOff, 'display': pxLeft? 'block':'none'}">
     </div>
     <div
-        [ngStyle]="{'top.px': pxTopActive -fatherheight -5,'left.px': (width -slideWidth) / 2 ,'height.px': activeHeight ,'width.px': slideWidth, 'background': colorActive}">
+        [ngStyle]="{'top.px': pxTopActive -fatherheight -5,'left.px': (width -slideWidth) / 2 ,'height.px': activeHeight ,'width.px': slideWidth, 'background': colorActive, 'display': pxLeft? 'block':'none'}">
     </div>
 </div>

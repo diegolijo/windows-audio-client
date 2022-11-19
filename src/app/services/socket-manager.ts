@@ -14,6 +14,7 @@ export class SocketManager {
   private socketEvents = new Subject<any>();
   private url = '';
   private user = 'usuario prueba';
+  private arduinoSocket: WebSocket;
 
   constructor(
     private platform: Platform,
@@ -88,14 +89,26 @@ export class SocketManager {
     }
   }
   // ------------------ arduino socket -------------------
-  public initArduinoSocket(onMessage, onOpen?, onClose?) {
-    console.log('Trying to open a WebSocket connection...');
-    const gateway = `ws://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/ws`;
-    let websocket;
-    websocket = new WebSocket(gateway);
-    websocket.onopen = onOpen;
-    websocket.onclose = onClose;
-    websocket.onmessage = onMessage; // <-- add this line
+  public clearArduinoSocket() {
+    try {
+      delete this.arduinoSocket;
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  public initArduinoSocket(onMessage, onOpen?, onClose?, onError?) {
+    try {
+      console.log('Trying to open a WebSocket connection...');
+      const gateway = `ws://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/ws`;
+      this.arduinoSocket = new WebSocket(gateway);
+      this.arduinoSocket.onopen = onOpen;
+      this.arduinoSocket.onclose = onClose;
+      this.arduinoSocket.onmessage = onMessage;
+      this.arduinoSocket.onerror = onError;
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   //--------------------------------------------------------
