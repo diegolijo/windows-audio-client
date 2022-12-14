@@ -43,14 +43,18 @@ export class FatherComponent implements OnInit, OnChanges {
     this.loadLongPressOnElement();
     this.pxTop = this.height - this.fatherheight / 2;
     setTimeout(() => {
-      this.pxLeft = ((this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 3));
+      this.pxLeft = this.width / 2;
     }, 100);
+    setTimeout(() => {
+      this.pxLeft = ((this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 2));
+    }, 101);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes.inputValue) {
       console.log();
       //knob values
+      this.pxLeft = ((this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 2));
       this.pxTop = this.height - ((this.height * (changes.inputValue.currentValue || 0) / this.scale) + (this.fatherheight / 2));
       //slide values
       this.activeHeight = this.height - this.pxTop - this.fatherheight / 2;
