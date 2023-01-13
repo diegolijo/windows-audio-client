@@ -295,21 +295,21 @@ export class HomePage implements OnInit {
     }
   }
 
-
   private subscribeTokeyboard() {
-    window.addEventListener('ionKeyboardDidHide', () => {
-      if (new Date().getTime() - this.dateShow > 500) {
-        console.log('ionKeyboardDidHide date: ' + this.dateShow);
-        this.keybShow = false;
-        console.log('ionKeyboardDidHide keybShow: ' + this.keybShow);
-      }
-    });
     window.addEventListener('ionKeyboardDidShow', ev => {
       console.log('ionKeyboardDidShow date: ' + new Date().getTime());
       this.dateShow = new Date().getTime();
       this.keybShow = true;
-      this.refreshValueFather();
+
       console.log('ionKeyboardDidShow keybShow: ' + this.keybShow);
+    });
+    window.addEventListener('ionKeyboardDidHide', () => {
+      if (new Date().getTime() - this.dateShow > 500) {
+        console.log('ionKeyboardDidHide date: ' + this.dateShow);
+        this.keybShow = false;
+        this.refreshValueFather();
+        console.log('ionKeyboardDidHide keybShow: ' + this.keybShow);
+      }
     });
   }
 
