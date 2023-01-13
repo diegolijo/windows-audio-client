@@ -23,6 +23,12 @@ export class HomePage implements OnInit {
   resumeSubscription: any;
   pauseSubscription: any;
 
+  searchValue: string;
+
+  urlNetflix = 'https://www.netflix.com/search?q=';
+  keybShow: boolean;
+  dateShow = 0;
+
   constructor(
     public socket: SocketManager,
     private ngZone: NgZone,
@@ -36,17 +42,23 @@ export class HomePage implements OnInit {
     try {
       await this.platform.ready();
       this.width = window.innerWidth;
-      this.height = window.innerHeight * 0.60;
+      this.height = window.innerHeight * 0.55;
       this.subscribeToSocket();
+      this.subscribeTokeyboard();
       this.subscribeToPauseResume();
-      this.helper.isWifiConected = await this.wifiWizard2.getConnectedSSID();
+      this.helper.isWifiConected = await this.platform.is('cordova') ? await this.wifiWizard2.getConnectedSSID() : true;
       await this.helper.showLoader('conectando ♪ ♫ ♪ ...');
       this.socket.init();
-      this.socket.initArduinoSocket((event) => this.onMessage(event), (event) => this.onOpen(event), (event) => this.onClose(event));
+      return;
+      this.socket.initArduinoSocket(
+        (event) => this.onMessage(event),
+        (event) => this.onOpen(event),
+        (event) => this.onClose(event));
     } catch (err) {
       console.log(JSON.stringify(err));
     }
   }
+
 
   async ionViewDidEnter() {
 
@@ -59,23 +71,23 @@ export class HomePage implements OnInit {
       console.log('value-> ' + value + '/ ' + (value * factor));
       this.socket.sendMessage(value);
       this.input = value;
-      this.http.get(`http://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/motor/${(value * factor)}`);
       el.lastValue = value;
+      return;
+      this.http.get(`http://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/motor/${(value * factor)}`);
     }
   }
 
   public onClickViewMode() {
-    const value = this.input;
-    delete this.input;
     this.viewMode = !this.viewMode ? 'keyboard' : '';
-    setTimeout(() => {
-      this.input = value;
-    }, 1);;
+    this.refreshValueFather();
   }
+
 
   public async onClickReconect() {
     try {
-      await this.wifiWizard2.getConnectedSSID();
+      if (this.platform.is('cordova')) {
+        await this.wifiWizard2.getConnectedSSID();
+      }
       this.reconnect();
     } catch (err) {
       this.helper.showMessage('Conectate a la wifi!!!');
@@ -93,6 +105,7 @@ export class HomePage implements OnInit {
 
   public onClickLeft() {
     this.socket.sendKeyCode(37);
+    return;
     this.http.get(`http://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/motor/2`);
   }
 
@@ -102,6 +115,7 @@ export class HomePage implements OnInit {
 
   public onClickRight() {
     this.socket.sendKeyCode(39);
+    return;
     this.http.get(`http://${Constants.SENSOR_IP}:${Constants.HTTP_PORT}/motor/1`);
   }
 
@@ -133,19 +147,46 @@ export class HomePage implements OnInit {
 
   public async onClickWifi() {
     try {
-      await this.wifiWizard2.getConnectedSSID();
+      if (this.platform.is('cordova')) {
+        await this.wifiWizard2.getConnectedSSID();
+      }
       this.reconnect();
     } catch (err) {
       this.helper.showMessage('Conectate a la wifi!!!');
     }
   }
 
+  public async onClickUndo() {
+    try {
+      if (this.platform.is('cordova')) {
+        this.socket.sendCommand('control-shift', '84'); // T
+      } else {
+        this.keybShow = !this.keybShow;
+        this.refreshValueFather();
+      }
+    } catch (err) {
+      this.helper.showMessage(err);
+    }
+  }
+
+  public async onClickURL() {
+    try {
+      if (this.searchValue) {
+        this.socket.sendCommand('control', '115'); // F4
+        setTimeout(() => {
+          const url = this.urlNetflix + this.searchValue.replaceAll(' ', '%20');
+          this.socket.sendKeyURL(url);
+        }, 500);
+      }
+    } catch (err) {
+      this.helper.showMessage(err);
+    }
+  }
   //***************************** FUNCTIONS *****************************/
 
   // ------------------ socket arduino ------------------------
   private onMessage(event) {
     const value = JSON.parse(event.data);
-
     this.socket.sendMessage(value.encoder);
   }
 
@@ -165,6 +206,14 @@ export class HomePage implements OnInit {
     this.input = value;
   }
 
+  private refreshValueFather() {
+    const value = this.input;
+    delete this.input;
+    setTimeout(() => {
+      this.input = value;
+    }, 1);
+  }
+
   private reconnect() {
     try {
       this.helper.showLoader('conectando ♪ ♫ ♪ ...');
@@ -172,6 +221,7 @@ export class HomePage implements OnInit {
       this.socket.init();
       // arduino socket
       this.socket.clearArduinoSocket();
+      return;
       this.socket.initArduinoSocket(
         (event) => this.onMessage(event),
         (event) => this.onOpen(event),
@@ -244,6 +294,29 @@ export class HomePage implements OnInit {
       }));
     }
   }
+
+
+  private subscribeTokeyboard() {
+    window.addEventListener('ionKeyboardDidHide', () => {
+      if (new Date().getTime() - this.dateShow > 500) {
+        console.log('ionKeyboardDidHide date: ' + this.dateShow);
+        this.keybShow = false;
+        console.log('ionKeyboardDidHide keybShow: ' + this.keybShow);
+      }
+    });
+    window.addEventListener('ionKeyboardDidShow', ev => {
+      console.log('ionKeyboardDidShow date: ' + new Date().getTime());
+      this.dateShow = new Date().getTime();
+      this.keybShow = true;
+      this.refreshValueFather();
+      console.log('ionKeyboardDidShow keybShow: ' + this.keybShow);
+    });
+  }
+
+
+
+
+
 
 
 }

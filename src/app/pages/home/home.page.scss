@@ -12,21 +12,36 @@
   font-size: 3em;
 }
 
+.url-container {
+  position: absolute;
+  width: 100%;
+  top: 0.5em;
+  display: flex;
+  justify-content: center;
+  div {
+    width: 95%;
+    display: flex;
+    background: var(--ion-color-dark);
+    color: var(--ion-color-light);
+    text-align: end;
+    border-radius: 1em;
+  }
+}
+
 .father {
   height: 100%;
   width: 100%;
   display: flex;
-  justify-content: center;
   align-items: center;
   app-father {
-    margin-top: -1.5em;
+    margin-top: 1.5em;
   }
 }
 
 .top-btns {
   position: absolute;
   width: 100%;
-  top: 0.5em;
+  top: 3.5em;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -66,8 +81,8 @@
 .tool-bar {
   position: absolute;
   width: 100%;
-  display: flex;
   bottom: 2em;
+  display: flex;
   justify-content: space-around;
   ion-icon {
     font-size: 3.5em;
@@ -78,21 +93,23 @@
   }
 }
 .keyboard {
-  margin-top: 5em;
+  margin-top: 40%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
   width: 100%;
   height: 100%;
 }
+
+
 .pad {
   display: flex;
   width: 40%;
   height: 1.2em;
   background: #218dbe;
-  margin: 0em 0em 0.5em 0em;
+  // margin: 0em 0em 0em 0em;
   justify-content: center;
   align-items: center;
   font-size: 6em;

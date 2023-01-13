@@ -88,6 +88,19 @@ export class SocketManager {
       this.socket.emit('value', { key: 'keycode', value: value });
     }
   }
+
+  public sendKeyURL(value) {
+    if (this.isConnected) {
+      this.socket.emit('value', { key: 'url', value: value });
+    }
+  }
+
+  public sendCommand(press, value) {
+    if (this.isConnected) {
+      this.socket.emit('value', { key: press, value: value });
+    }
+  }
+
   // ------------------ arduino socket -------------------
   public clearArduinoSocket() {
     try {

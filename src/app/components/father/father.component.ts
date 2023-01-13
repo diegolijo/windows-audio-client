@@ -44,7 +44,7 @@ export class FatherComponent implements OnInit, OnChanges {
     this.pxTop = this.height - this.fatherheight / 2;
     setTimeout(() => {
       this.pxLeft = ((this.width / 2) - (this.elementRef.nativeElement.children[0].children[0].width / 3));
-    }, 100);
+    }, 500);
   }
 
   ngOnChanges(changes: SimpleChanges) {

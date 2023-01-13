@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
     setInterval(async () => {
       if (!this.socket.isConnected) {
         try {
-          this.helper.isWifiConected = await this.wifiWizard2.getConnectedSSID();
+          this.helper.isWifiConected = await this.platform.is('cordova') ? await this.wifiWizard2.getConnectedSSID() : true;
           this.helper.showLoader('conectando ♪ ♫ ♪ ...');
           this.socket.init();
         } catch (err) {
@@ -106,7 +106,7 @@ export class AppComponent implements OnInit {
       this.resumeSubscription = await this.platform.resume.subscribe(() => this.ngZone.run(async () => {
         if (!this.socket.isConnected) {
           try {
-            this.helper.isWifiConected = await this.wifiWizard2.getConnectedSSID();
+            this.helper.isWifiConected = await this.platform.is('cordova') ? await this.wifiWizard2.getConnectedSSID() : true;
             this.helper.showLoader('conectando ♪ ♫ ♪ ...');
             this.socket.init();
           } catch (err) {
